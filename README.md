@@ -1,3 +1,4 @@
 # example_r_repo
 example repository for project
-Description of project
+
+Two functions that normalize vectors of numbers
