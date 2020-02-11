@@ -5,7 +5,7 @@ require(testthat)
 source("src/zero_one_normalize.R")
 
 # Execute Unit Test
-test_that('Test zero_one_noramlize(c(10,50,100))',{
+test_that('Test zero_one_normalize(c(10,50,100))',{
   #' Unit test of zero_one_normalize() function
   result = c(10,50,100) %>%
     zero_one_normalize() %>%
