@@ -1,7 +1,6 @@
 # Load Modules
 req_pkgs = c('dplyr', 'testthat')
 lapply(req_pkgs, require, character.only = TRUE)
-require(testthat)
 source("src/zscore_normalize.R")
 
 # Execute Unit Test
