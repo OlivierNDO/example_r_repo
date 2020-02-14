@@ -1,9 +1,10 @@
 
 ### Config
 #################################################################
-# Load CRAN Packages
+# Load CRAN Packages & Turn Off Scientific Notation
 req_pkgs = c('data.table', 'dplyr', 'ggplot2', 'gridExtra')
 lapply(req_pkgs, require, character.only = TRUE)
+options(scipen = 999)
 
 # Load Project Configuration and Packages
 source('configuration.R')
@@ -25,7 +26,6 @@ df = read.csv(paste0(config_raw_data_folder, config_train_file)) %>% dplyr::samp
 df[,config_categorical_columns] = apply(df[,config_categorical_columns], 2,
                                         recode_sparse_elements,
                                         freq_cutoff = config_min_categ_element_perc)
-
 
 # Missing Values
 missing_value_df = missing_value_summary(df)
