@@ -1,6 +1,6 @@
 # File Paths and File Names
 config_raw_data_folder = './data/raw/'
-config_plot_output_folder = './model_dev/data_exploration/plot_pictures/'
+config_plot_output_folder = './data_exploration/plot_pictures/'
 config_train_file = 'train.csv'
 
 # Field Metadata
