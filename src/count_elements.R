@@ -54,3 +54,58 @@ get_categorical_counts = function(dframe, categorical_columns){
   return(output_df)
 }
 
+
+recode_sparse_elements = function(in_vector, freq_cutoff,
+                                  recode_value = 'sparse recode', return_factor = TRUE){
+  #' Recodes the elements in a vector representing a small portion
+  #' of the total, specified by <freq_cutoff> arugment
+  #' Recoding sparse discrete variables.
+  #' @param in_vector input vector representing categorical variable
+  #' @param freq_cutoff numeric value specifying the % of total count
+  #' an element must make up in order to avoid recoding
+  #' @param recode_value the value used to replace sparse elements in the vector
+  #' @param return_factor boolean value indicating whether or not to convert output to factor 
+  #' representing column names of categorical variables
+  #' @returns vector with sparse values recoded
+  
+  # Generate percentage counts
+  unique_value_counts = count_each_unique(in_vector)
+  existing_values = data.frame(element = in_vector)
+  
+  # Recode elements below <freq_cutoff> % of total
+  recoded_values = unique_value_counts %>%
+    dplyr::mutate(perc_total = count / length(in_vector)) %>%
+    dplyr::mutate(new_element = ifelse(perc_total < freq_cutoff,
+                                       as.character(recode_value),
+                                       as.character(element))) %>%
+    dplyr::select(element, new_element)
+  
+  output_df = data.frame(element = in_vector) %>%
+    dplyr::inner_join(recoded_values, 'element')
+  
+  # Return values
+  if (return_factor){
+    return(factor(output_df$new_element))
+  } else {
+    return(output_df$new_element)
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
