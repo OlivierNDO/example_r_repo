@@ -35,6 +35,6 @@ config_continuous_columns = c('cont1', 'cont2', 'cont3', 'cont4', 'cont5',
                               'cont11', 'cont12', 'cont13', 'cont14')
 
 # Configuration for Recoding Sparse Categorical Elements
-config_min_categ_element_perc = 0.01
+config_min_categ_element_perc = 0.025
 
 

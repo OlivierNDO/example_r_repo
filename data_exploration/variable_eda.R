@@ -19,7 +19,13 @@ source("src/zero_one_normalize.R")
 ### Generate PDFs with Distribution Plots
 ################################################################
 # Load Training Set, Limit to a Sample of 100k Records
-df = read.csv(paste0(config_data_folder, config_train_file)) %>% dplyr::sample_n(100000)
+df = read.csv(paste0(config_raw_data_folder, config_train_file)) %>% dplyr::sample_n(100000)
+
+# Recode Sparse Categorical Elements
+df[,config_categorical_columns] = apply(df[,config_categorical_columns], 2,
+                                        recode_sparse_elements,
+                                        freq_cutoff = config_min_categ_element_perc)
+
 
 # Missing Values
 missing_value_df = missing_value_summary(df)
@@ -59,5 +65,67 @@ for (pic in plot_iter_chunks){
 ################################################################
 categ_counts = get_categorical_counts(df, config_categorical_columns)
 
+
+
+categ_counts_regroup = categ_counts %>%
+  dplyr::mutate(element = ifelse(percent_total < config_min_categ_element_perc,
+                                 ''))
+
+
+
+t = c(rep('a', 500), rep('b', 100), rep('c', 390), rep('d', 5), rep('e', 5))
+
+
+
+
+temp = apply(df[,config_categorical_columns], 2, recode_sparse_elements, freq_cutoff = 0.025)
+
+old = c()
+new = c()
+
+for(c in 1:ncol(temp)){
+  new[[c]] = length(unique(temp[,c]))
+  old[[c]] = length(unique(df[,config_categorical_columns[c]]))
+}
+
+
+recode_categorical_columns = function(dframe, categorical_columns,
+                                      recode_value = 'sparse recode', return_factor = TRUE){
+  #' Applies recode_sparse_elements() function to a list of 
+  #' specified columns in a data.frame object, returning a dataframe
+  #' with recoded sparse discrete variables.
+  #' @param dframe input data.frame object
+  #' @param categorical_columns representing categorical variable
+  #' @param recode_value the value used to replace sparse elements in the vector
+  #' @param return_factor boolean value indicating whether or not to convert output to factor 
+  #' representing column names of categorical variables
+  #' @returns data.frame with <categorical_columns> fields after recoding
+  
+  column_list = 
+  
+  
+  
+  
+  
+  
+  
+}
+
+
+
+
+
+
+
+
+
+
+temp = recode_sparse_elements(t, 0.01)
+
+
+
+for (c in config_categorical_columns){
+  print(class(df[1,c]))
+}
 
 
