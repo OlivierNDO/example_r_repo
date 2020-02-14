@@ -1,0 +1,60 @@
+---
+title: ''
+author: ''
+date: ''
+output: html_document
+---
+
+## Load Project Configuration and Packages
+```{r configuration, warning = FALSE, echo = TRUE, include = FALSE}
+req_pkgs = c('data.table', 'dplyr', 'ggplot2', 'htmltools', 'rmarkdown')
+lapply(req_pkgs, require, character.only = TRUE)
+
+source('configuration.R')
+source('src/make_density_plots.R')
+source('src/make_violin_plots.R')
+source('src/missing_value_summary.R')
+source('src/split_vector.R')
+source('src/zscore_normalize.R')
+source('src/zero_one_normalize.R')
+```
+
+
+## Load Training Set, Limit to a Sample of 100k Records
+```{r read_data, warning = FALSE, echo = TRUE, include = FALSE}
+df = read.csv(paste0(config_data_folder, config_train_file)) %>%
+  dplyr::sample_n(100000)
+```
+
+
+## Summary of Missing Values
+```{r missing_values, warning = FALSE, echo = TRUE, include = FALSE}
+missing_value_summary(df)
+```
+
+## Continuous Variable Distributions
+```{r contin_dist, warning = FALSE, echo = TRUE, include = FALSE}
+make_density_plots(dframe = df,
+                   continuous_columns = config_continuous_columns,
+                   plot_title_lab = 'Training Set Continuous Fields - 100k record sample')
+```
+
+## Categorical Variable Response Distributions
+```{r categ_dist, warning = FALSE, echo = TRUE, include = FALSE}
+
+categorical_groups = split_vector(config_categorical_columns, 6)
+
+plot_list = list()
+
+for (i in 1:length(categorical_groups)){
+  plot_list[[i]] = make_violinplots(dframe = df,
+                                    categorical_columns = categorical_groups[i],
+                                    response_column = config_response_column,
+                                    min_records = 100,
+                                    plot_title_lab = '')
+  htmltools::tags$br()
+  htmltools::tags$br()
+}
+
+htmltools::tagList(plot_list)
+```
