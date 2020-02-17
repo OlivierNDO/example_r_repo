@@ -5,7 +5,7 @@ find_mode = function(in_vector) {
     return(mode_value)
 }
 
-dummy_code = function(in_vector, prefix = '_varname'){
+dummy_code = function(in_vector, prefix = 'varname_'){
     #' Convert vector into data.frame object with dummy coded values
     #' using the most frequently occuring value as a reference level
     #' and a specified prefix (generally the variable name)
